@@ -5,6 +5,8 @@
 #include "ex16_5.h"
 #include "ex16_12.h"
 #include "ex16_14.h"
+#include "ex16_16.h"
+#include "ex16_19.h"
 
 
 
@@ -34,10 +36,22 @@ int main() {
 	Screen<5, 3> iscreen;
 	iscreen.display(std::cout);
 	iscreen.move(4, 0).set('*').display(std::cout);
-	std::cout << iscreen;
+	std::cout << iscreen << std::endl;
+	std::cout << "input anything you want: " << std::endl;
 	std::cin >> iscreen;
 	std::cout << std::endl;
 	std::cout << iscreen;
+	
+	std::cout << "ex16_16: " << std::endl;
+	
+	Vec<std::string> sv{ "devin", "chang" };
+	std::cout << sv.size() << std::endl;
+
+	std::cout << "ex16_19: " << std::endl;
+	mprint(std::cout, vec) << std::endl;
+	mprint2(std::cout, lst) << std::endl;
+	//mprint(lst);
+
 	system("pause");
 	return 0;
 }
