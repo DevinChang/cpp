@@ -8,7 +8,7 @@ std::allocator<std::string> StrVec::alloc;
 StrVec::StrVec(const StrVec &s){
 	auto newdata = alloc_n_copy(s.begin(), s.end());
 	elements = newdata.first;
-	first_free = newdata.second;
+	first_free = cap = newdata.second;
 }
 
 StrVec::StrVec(StrVec &&s) noexcept : elements(s.elements), first_free(s.first_free), cap(s.cap){
@@ -18,25 +18,28 @@ StrVec::StrVec(StrVec &&s) noexcept : elements(s.elements), first_free(s.first_f
 
 
 //ex13_40
+//2017/5/9 fixed: 增加cap的指向
 StrVec::StrVec(std::initializer_list<std::string> il){
 	auto newdata = alloc_n_copy(il.begin(), il.end());
 	elements = newdata.first;
-	first_free = newdata.second;
+	first_free = cap = newdata.second;
 }
 
+//2017/5/9 fixed: 增加cap的指向
 StrVec & StrVec::operator=(const StrVec &rhs){
 	auto data = alloc_n_copy(rhs.begin(), rhs.end());
 	free();
 	elements = data.first;
-	first_free = data.second;
+	first_free = cap = data.second;
 	return *this;
 }
 
+//2017/5/9 fixed: 增加cap的指向
 StrVec & StrVec::operator=(std::initializer_list<std::string> il){
 	auto data = alloc_n_copy(il.begin(), il.end());
 	free();
 	elements = data.first;
-	first_free = data.second;
+	first_free = cap = data.second;
 	return *this;
 
 }
@@ -70,7 +73,7 @@ void StrVec::push_back(const std::string &s){
 }
 
 void StrVec::resize(size_t n, std::string s){
-	if (n < size()) {
+	if (n > size()) {
 		while (n < size())
 			push_back(s);
 	}
@@ -94,7 +97,7 @@ void StrVec::reserve(size_t n) {
 
 std::pair<std::string*, std::string*> StrVec::alloc_n_copy(const std::string *b, const std::string *e) {
 	auto data = alloc.allocate(e - b);
-	return{data, std::uninitialized_copy(e, b, data)};
+	return{data, std::uninitialized_copy(b, e, data)};
 }
 
 void StrVec::free(){
