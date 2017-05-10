@@ -7,8 +7,17 @@
 #include "ex16_14.h"
 #include "ex16_16.h"
 #include "ex16_19.h"
+#include "ex16_28.h"
+#include "ex16_47.h"
 
 
+void f(int v1, int &v2) {
+	std::cout << v1 << " " << ++v2 << std::endl;
+}
+
+void g(int &&i, int &j) {
+	std::cout << i << " " << j << std::endl;
+}
 
 int main() {
 	std::cout << "ex16_4: " << std::endl;
@@ -52,6 +61,18 @@ int main() {
 	mprint2(std::cout, lst) << std::endl;
 	//mprint(lst);
 
+	std::cout << "ex16_21: " << std::endl;
+	auto foo = SharePoint<int>(new int(21));
+	auto bar(foo);
+	std::cout << *foo << std::endl;
+	std::cout << foo.use_count() << std::endl;
+	auto foo2 = SharePoint<std::string>(new std::string("DevinChang"));
+	std::cout << *foo2 << std::endl;
+
+	std::cout << "ex16_47: " << std::endl;
+	int i = 22, j = 21;
+	flip(f, j, 42);
+	flip(g, i, 42);
 	system("pause");
 	return 0;
 }

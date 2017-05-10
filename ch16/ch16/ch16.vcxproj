@@ -89,6 +89,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -150,11 +151,17 @@
     <ClCompile Include="ex16_14.cpp" />
     <ClCompile Include="ex16_2.cpp" />
     <ClCompile Include="ex16_4.h" />
+    <ClCompile Include="ex16_41.cpp" />
+    <ClCompile Include="ex16_47.h" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ex16_12.h" />
     <ClInclude Include="ex16_14.h" />
+    <ClInclude Include="ex16_16.h" />
+    <ClInclude Include="ex16_19.h" />
+    <ClInclude Include="ex16_21.h" />
+    <ClInclude Include="ex16_28.h" />
     <ClInclude Include="ex16_5.h" />
     <ClInclude Include="exm_7_2._11_21.h" />
   </ItemGroup>
