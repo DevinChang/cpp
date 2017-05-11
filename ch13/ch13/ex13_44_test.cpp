@@ -3,7 +3,7 @@
 #include <algorithm>
 
 
-int main() {
+int main20() {
 	std::vector<String> vec;
 	String s1("devin"), s2("chang");
 	String s3(s2);

@@ -4,6 +4,7 @@
 #include <string>
 #include <memory>
 #include <initializer_list>
+#include <utility>
 
 
 
@@ -14,6 +15,7 @@ class StrVec {
 	friend bool operator<= (const StrVec &lhs, const StrVec &rhs);
 	friend bool operator> (const StrVec &lhs, const StrVec &rhs);
 	friend bool operator>= (const StrVec &lhs, const StrVec &rhs);
+	friend std::ostream &operator<< (std::ostream &os, const StrVec &rhs);
 public:
 	StrVec() : elements(nullptr), first_free(nullptr), cap(nullptr){}
 	StrVec(const StrVec &);
@@ -27,10 +29,13 @@ public:
 	const std::string &operator[] (std::size_t n) const;
 	~StrVec();
 	void push_back(const std::string &);
+	std::string &pop();
 	size_t size() const { return first_free - elements; }
 	size_t capcity() const { return cap - elements; }
 	std::string *begin() const { return elements; }
 	std::string *end() const { return first_free; }
+	template <typename...Args>
+	void emplace_back(Args&&... args);
 	void resize(size_t n, std::string s);
 	void resize(size_t n);
 	void reserve(size_t);
@@ -49,3 +54,8 @@ private:
 	std::string *cap;
 };
 
+template<typename ...Args>
+inline void StrVec::emplace_back(Args && ...args){
+	chk_n_alloc();
+	alloc.construct(first_free++, std::forward<Args>(args)...);
+}
