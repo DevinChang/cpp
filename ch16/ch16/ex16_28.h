@@ -3,30 +3,31 @@
 #include <functional>
 #include "ex16_21.h"
 
-template <typename> class SharePoint;
+template <typename> class SharePointer;
 template <typename T>
-void swap(SharePoint<T> &lhs, SharePoint<T> &rhs);
+void swap(SharePointer<T> &lhs, SharePointer<T> &rhs);
 
 
 template <typename T>
-class SharePoint {
-	friend void swap<T>(SharePoint<T> &lhs, SharePoint<T> &rhs);
+class SharePointer {
+	friend void swap<T>(SharePointer<T> &lhs, SharePointer<T> &rhs);
 public:
-	SharePoint() : p(nullptr), use(nullptr), deleter(DebugDelete()){}
-	explicit SharePoint(T *pt) : p(pt), use(new size_t(1)), deleter(DebugDelete()){}
-	SharePoint(const SharePoint &sp) : p(sp.p), use(sp.use), deleter(sp.deleter) { if (use)++*use; }
-	SharePoint &operator= (const SharePoint &);
+	SharePointer() : p(nullptr), use(nullptr), deleter(DebugDelete()){}
+	explicit SharePointer(T *pt) : p(pt), use(new size_t(1)), deleter(DebugDelete()){}
+	SharePointer(const SharePointer &sp) : p(sp.p), use(sp.use), deleter(sp.deleter) { if (use)++*use; }
+	SharePointer &operator= (const SharePointer &);
 	T &operator* () { return *p; }
 	const T &operator* () const { return *p; }
 	T *operator->() const { return &*p; }
 	void get() { return p; }
-	void swap(SharePoint &rhs) { ::swap(*this, rhs); }
+	void swap(SharePointer &rhs) { ::swap(*this, rhs); }
 	int use_count() const { return *use; }
 	bool unique() const { return use_count() == 1; }
 	void reset() { free(); }
 	void reset(T *tp);
 	void reset(T *tp, std::function<void(T *)> del);
-	~SharePoint();
+	
+	~SharePointer();
 private:
 	T *p;
 	size_t *use;
@@ -35,7 +36,7 @@ private:
 };
 
 template<typename T>
-inline SharePoint<T> & SharePoint<T>::operator=(const SharePoint &sp){
+inline SharePointer<T> & SharePointer<T>::operator=(const SharePointer &sp){
 	++*sp.use;
 	if (--*use == 0) {
 		delete p;
@@ -48,7 +49,7 @@ inline SharePoint<T> & SharePoint<T>::operator=(const SharePoint &sp){
 }
 
 template<typename T>
-inline void SharePoint<T>::reset(T * tp){
+inline void SharePointer<T>::reset(T * tp){
 	if (p != tp) {
 		free();
 		p = tp.p;
@@ -57,13 +58,13 @@ inline void SharePoint<T>::reset(T * tp){
 }
 
 template<typename T>
-inline void SharePoint<T>::reset(T * tp, std::function<void(T*)> del){
+inline void SharePointer<T>::reset(T * tp, std::function<void(T*)> del){
 	reset(tp);
 	deleter = del;
 }
 
 template<typename T>
-inline SharePoint<T>::~SharePoint(){
+inline SharePointer<T>::~SharePointer(){
 	/*if (--*use == 0) {
 		delete p;
 		delete use;
@@ -72,8 +73,8 @@ inline SharePoint<T>::~SharePoint(){
 }
 
 template<typename T>
-inline void SharePoint<T>::free(){
-	//若p不为空，且--*use==0表明p是指向SharePoint唯一对象
+inline void SharePointer<T>::free(){
+	//若p不为空，且--*use==0表明p是指向SharePointer唯一对象
 	if (p && 0 == --*use) {
 		delete use;
 		deleter(p);
@@ -86,12 +87,17 @@ inline void SharePoint<T>::free(){
 }
 
 template<typename T>
-void swap(SharePoint<T> &lhs, SharePoint<T>& rhs){
+void swap(SharePointer<T> &lhs, SharePointer<T>& rhs){
 	using std::swap;
 	swap(lhs.p, rhs.p);
 	swap(lhs.use, rhs.use);
 }
 
+
+template<typename T, typename...Args>
+SharePointer<T> makeshared(Args&&... args) {
+	return SharePointer<T>(new T(std::forward<Args>(args)...));
+}
 
 template <typename, typename> class UniquePointer;
 template<typename T, typename D>
@@ -133,3 +139,5 @@ inline T* UniquePointer<T, D>::release(){
 	deleter(p);
 	return ret;
 }
+
+

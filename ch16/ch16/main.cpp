@@ -9,6 +9,11 @@
 #include "ex16_19.h"
 #include "ex16_28.h"
 #include "ex16_47.h"
+#include "ex16_48.h"
+#include "ex16_50.h"
+#include "ex16_52.h"
+#include "ex16_53.h"
+#include "ex16_56.h"
 
 
 void f(int v1, int &v2) {
@@ -55,6 +60,10 @@ int main() {
 	
 	Vec<std::string> sv{ "devin", "chang" };
 	std::cout << sv.size() << std::endl;
+	sv.emplace_back("warriors.");
+	sv.emplace_back(10, '!');
+	for (auto &p : sv)
+		std::cout << p << std::endl;
 
 	std::cout << "ex16_19: " << std::endl;
 	mprint(std::cout, vec) << std::endl;
@@ -62,17 +71,52 @@ int main() {
 	//mprint(lst);
 
 	std::cout << "ex16_21: " << std::endl;
-	auto foo = SharePoint<int>(new int(21));
+	auto foo = SharePointer<int>(new int(21));
 	auto bar(foo);
 	std::cout << *foo << std::endl;
 	std::cout << foo.use_count() << std::endl;
-	auto foo2 = SharePoint<std::string>(new std::string("DevinChang"));
+	auto foo2 = SharePointer<std::string>(new std::string("DevinChang"));
 	std::cout << *foo2 << std::endl;
 
 	std::cout << "ex16_47: " << std::endl;
 	int i = 22, j = 21;
 	flip(f, j, 42);
 	flip(g, i, 42);
-	system("pause");
+
+	std::cout << "ex16_48: " << std::endl;
+	std::string s2("hi");
+	std::cout << debug_rep(s2) << std::endl;
+	std::cout << debug_rep("hello world") << std::endl;
+	
+	std::cout << "ex16_50: " << std::endl;
+	int im = 42, *p = &i;
+	const int ci = 0, *p2 = &ci;
+	g(42);
+	g(p);
+	g(ci);
+	g(p2);
+	f(42);
+	f(p);
+	f(ci);
+	f(p2);
+
+	std::cout << "ex16_51:" << std::endl;
+	int ii = 21;
+	double d = 3.14; 
+	std::string ss = "how now brown cow";
+	ifoo(i, s, 42, d);
+	ifoo(s, 42, "hi");
+	ifoo(d, s);
+	ifoo("hi");
+
+	std::cout << "ex16_53: " << std::endl;
+	print(std::cout, ii, s, 42, d) << std::endl;
+	print(std::cout, ss, ii) << std::endl;
+	print(std::cout, d) << std::endl;
+
+	std::cout << "ex16_56: " << std::endl;
+	
+	
+	system("pause"); 
 	return 0;
 }

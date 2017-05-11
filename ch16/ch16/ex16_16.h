@@ -4,6 +4,7 @@
 #include <memory>
 #include <initializer_list>
 #include <algorithm>
+#include <utility>
 
 //2017/5/9 error: 成员函数运算符重载的时候不用在类外再声明。
 //template <typename> class Vec;
@@ -11,8 +12,12 @@
 //Vec<T> &operator= (const Vec<T> &);
 
 
-template <typename T> class Vec {
+template <typename> class Vec;
+template <typename T>
+std::ostream &operator<< (std::ostream &os, const Vec<T> &t);
 
+template <typename T> class Vec {
+	friend std::ostream& operator<< <T>(std::ostream &os, const Vec<T> &t);
 public:
 	Vec() = default;
 	Vec(std::initializer_list<T>);
@@ -26,16 +31,19 @@ public:
 	~Vec();
 public:
 	void push_back(const T&);
-	size_t size() { return first_free - elements; }
-	size_t capacity() { return cap - elements; }
+	T &pop() const { return *--first_free; }
+	size_t size() const { return first_free - elements; }
+	size_t capacity() const { return cap - elements; }
 	T *begin() { return elements; }
 	T *end() { return first_free; }
+	template <typename...Args>
+	void emplace_back(Args&&...args);
 	void resize(size_t n);
 	void resize(size_t n, T &);
 	void reserve(size_t);
 private:
 	static std::allocator<T> alloc;
-	void check_n_copy() { if (size() == capacity()) realloc(); }
+	void check_n_copy() { if (size() == capacity()) reallocate(); }
 	std::pair<T *, T *> alloc_n_copy(const T *, const T *);
 	void reallocate();
 	void reallocate(size_t);
@@ -185,4 +193,16 @@ inline void Vec<T>::free(){
 		std::for_each(elements, first_free, [](const T &t) {alloc.destroy(&t); });
 		alloc.deallocate(elements, cap - elements);
 	}
+}
+
+template<typename T>
+template<typename ...Args>
+inline void Vec<T>::emplace_back(Args && ...args){
+	check_n_copy();
+	alloc.construct(first_free++, std::forward<Args>(args)...);
+}
+
+template<typename T>
+std::ostream & operator<<(std::ostream & os, const Vec<T>& t){
+	return os << *t.elements;
 }
