@@ -45,8 +45,7 @@ Sales_data &Sales_data::operator +=(const Sales_data &rhs){
 	return *this;
 }
 
-Sales_data
-add(const Sales_data &lhs, const Sales_data &rhs){
+Sales_data add(const Sales_data &lhs, const Sales_data &rhs){
 	Sales_data sum = lhs;  // copy data members from lhs into sum
 	sum.combine(rhs);      // add data members from rhs into sum
 	return sum;
