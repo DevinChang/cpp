@@ -3,7 +3,7 @@
 #include "ex17_11.h"
 
 
-int main() {
+int main2() {
 	//ex17_10
 	std::cout << "ex17_10: " << std::endl;
 	std::vector<int> iv{ 1, 2, 3, 5, 8, 13, 21 };
