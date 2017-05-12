@@ -1,9 +1,9 @@
 #include <iostream>
 //#include <cerrno>
 #include <vector>
-#include "exm_7_2._11_21.h"
+#include "ex7_2_11_21.h"
 //#include "exm_7_23_24_27_32.h"
-#include "exm_7_43.h"
+#include "ex7_43.h"
 
 
 
@@ -90,9 +90,9 @@ int main() {
 	//b) reusult: std::string can not convert to Sales_data &
 	//c) Sales_data &combine(const Sales_data &) is legal.Because combine's parameter is const to reference.
 	//we can pass a temporary to that paramter. As b)'s parameter is no-const,so it's wrong.
-	std::string s("i can do all things.");
-	Sales_data i;
-	i.combine(s);
+	//std::string s("i can do all things.");
+	//Sales_data i;
+	//i.combine(s);
 	
 	system("pause");
 	return 0;
