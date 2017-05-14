@@ -23,7 +23,7 @@ bool validPhone(const std::smatch &m) {
 		return !m[3].matched && m[4].str() == m[6].str();
 }
 
-int main() {
+int main5() {
 	/*std::string line, word;
 	std::vector<person_info> people;
 	while (std::getline(std::cin, line)) {
