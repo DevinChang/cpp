@@ -9,7 +9,7 @@ bool valid(const std::smatch &m) {
 }
 
 
-int main() {
+int main3() {
 	//ex17_15
 	std::cout << "ex17_15:" << std::endl << "\t";
 	std::string pattern("[c^]ei");
