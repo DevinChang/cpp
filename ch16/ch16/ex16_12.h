@@ -16,8 +16,12 @@ template <typename T> class Blob {
 public:
 	typedef T value_type;
 	typedef typename std::vector<T>::size_type size_type;
-	Blob() : data(std::make_shared<std::vector<T>>()) {}
-	Blob(std::initializer_list<T> il) : data(std::make_shared<std::vector<T>>(il)){}
+	Blob() try : data(std::make_shared<std::vector<T>>()) {
+	}
+	catch (const std::bad_alloc &e) { /*handle_out_of_memory(e);*/ }
+	Blob(std::initializer_list<T> il) try : data(std::make_shared<std::vector<T>>(il)){
+	}
+	catch (const std::bad_alloc &e) { /*handle_out_of_memory(e);*/ }
 	template <typename It> Blob(It b, It e);
 	size_type size() const { return data->size(); }
 	bool empty() const { return data->empty(); }
@@ -95,7 +99,9 @@ inline void Blob<T>::check(size_type i, const std::string & msg) const{
 template <typename T> class BlobPtr {
 public:
 	BlobPtr() : curr(0) {}
-	BlobPtr(Blob <T>&a, size_t sz = 0) : wptr(a.data), curr(sz){}
+	BlobPtr(Blob <T>&a, size_t sz = 0) try : wptr(a.data), curr(sz){
+	}
+	catch (const std::bad_alloc &e) { /*handle_out_of_memory(e);*/ }
 	T &operator*() const {
 		auto p = check(curr, "dereference past end");
 		return (*p)[curr];
