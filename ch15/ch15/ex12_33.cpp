@@ -1,6 +1,9 @@
 #include "ex12_33.h"
 #include "ex12_19.h"
 
+using chapter10::QueryResult3;
+using chapter10::TextQuery3;
+
 TextQuery3::TextQuery3(std::ifstream &is)  {
 	std::string text;
 	while (std::getline(is, text)) {
@@ -26,7 +29,7 @@ QueryResult3 TextQuery3::query(const std::string &sought) const {
 		return QueryResult3(sought, loc->second, file);
 }
 
-std::ostream &print(std::ostream &os, QueryResult3 &qr) {
+std::ostream &chapter10::print(std::ostream &os, QueryResult3 &qr) {
 	os << qr.word << " occurs " << qr.lines->size() << ((qr.lines->size() > 1) ? " times." : " time.") << std::endl;
 	for (auto it = qr.begin(); it != qr.end(); ++it) {
 		StrBolbPtr p(*qr.get_file(), *it);
@@ -35,7 +38,7 @@ std::ostream &print(std::ostream &os, QueryResult3 &qr) {
 	return os;
 }
 
-std::ostream & operator<<(std::ostream &os, QueryResult3 &qr){
+std::ostream & chapter10::operator<<(std::ostream &os, QueryResult3 &qr){
 	os << qr.word << " occurs " << qr.lines->size() << ((qr.lines->size() > 1) ? " times." : " time.") << std::endl;
 	for (auto it = qr.begin(); it != qr.end(); ++it) {
 		StrBolbPtr p(*qr.get_file(), *it);

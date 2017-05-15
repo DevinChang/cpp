@@ -2,21 +2,26 @@
 #include <algorithm>
 #include <iterator>
 
+using chapter15::Query;
+using chapter15::Query_base;
+using chapter15::AndQuery;
+using chapter15::BinaryQuery;
+using chapter15::NotQuery;
+using chapter15::OrQuery;
 
-
-Query operator~(const Query &operand){
-	return std::shared_ptr<Query_base>(new NotQuery(operand));
+chapter15::Query chapter15::operator~(const chapter15::Query &operand){
+	return std::shared_ptr<chapter15::Query_base>(new chapter15::NotQuery(operand));
 }
 
-Query operator&(const Query &lhs, const Query &rhs){
-	return std::shared_ptr<Query_base>(new AndQuery(lhs, rhs));
+chapter15::Query chapter15::operator&(const chapter15::Query &lhs, const chapter15::Query &rhs){
+	return std::shared_ptr<chapter15::Query_base>(new chapter15::AndQuery(lhs, rhs));
 }
 
 
 
 
 
-Query operator|(const Query &lhs, const Query &rhs)
+Query chapter15::operator|(const Query &lhs, const Query &rhs)
 {
 	return std::shared_ptr<Query_base>(new OrQuery(lhs, rhs));
 }
@@ -52,3 +57,5 @@ QueryResult3 OrQuery::eval(const TextQuery3 &text) const{
 }
 
 Query::Query(const std::string & s) : q(new WordQuery(s)) { std::cout << "Query(const std::string & s)" << std::endl; }
+
+

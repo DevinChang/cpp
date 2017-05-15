@@ -1,6 +1,9 @@
 #pragma once
 #include "ex12_33.h"
 
+using chapter10::QueryResult3;
+using chapter10::TextQuery3;
+
 class query;
 
 class query_base {
