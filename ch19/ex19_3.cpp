@@ -15,16 +15,17 @@ class D : public B, public A{};
 
 
 
-int main() {
-
-	A *pa = new C;
+int main2() {
+	//success!
+	/* A*pa = new C;
 	if (B *pb = dynamic_cast<B*> (pa)) {
 		std::cout << "convert success!" << std::endl;
 	}
 	else {
 		std::cout << "convert fail!!" << std::endl;
-	}
+	}*/
 
+	//fail!!
 	//B *pb = new B;
 	//if (C *pc = dynamic_cast<C*> (pb)) {
 	//	std::cout << "convert success!" << std::endl;
